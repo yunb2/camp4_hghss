@@ -22,11 +22,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByEmail(String email, int status) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("email", email);
-        map.put("status", String.valueOf(status));
-        return session.selectOne("user.findByEmail", map);
+    public User findByEmail(String email) {
+        return session.selectOne("user.findByEmail", email);
     }
 
     @Override

@@ -37,9 +37,9 @@ public class UserService {
         String email = signinRequestDto.getEmail();
         String password = signinRequestDto.getPassword();
 
-        User user = userRepository.findByEmail(email, 1);
+        User user = userRepository.findByEmail(email);
 
-        if(user==null) throw new EmailNotExistException(email);
+        if(user==null || user.getPasswd() == null) throw new EmailNotExistException(email);
         if(!passwordEncoder.matches(password, user.getPasswd())) throw new PasswordWrongException();
 
         Future<Integer> updateAccessedAt = userRepository.updateAccessedAt(user.getId(), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
@@ -93,16 +93,21 @@ public class UserService {
         String email = signupRequestDto.getEmail();
         String passwd = passwordEncoder.encode(signupRequestDto.getPassword());
 
-        if(userRepository.countUser(email) > 0) throw new ExistEmailException(email);
+        User user = userRepository.findByEmail(email);
+        if(user != null && user.getPasswd() != null) throw new ExistEmailException(email);
 
         String key = UUID.randomUUID().toString();
-        User user = User.builder()
+        if(user == null) {
+            user = User.builder()
                         .email(email)
                         .nickname("temp")
                         .passwd(passwd)
                         .role(1)
                         .status(1)
                         .build();
+        } else {
+            user.setPasswd(passwd);
+        }
 
         if(mailUtil.sendSignupMail(key, user)) redisUtil.set(key, user, 10);
     }
@@ -122,7 +127,7 @@ public class UserService {
         int userId = userRepository.registerUser(user);
         if(userId > 0) redisUtil.delete(key);
 
-        String nickname = userRepository.getNickname(userId);
+        String nickname = (user.getNickname().equals("temp"))? userRepository.getNickname(userId) : user.getNickname();
 
         userRepository.updateNickname(userId, nickname, now);
     }

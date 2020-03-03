@@ -36,7 +36,7 @@ public class OAuth2Service {
         String token = getAccessToken(code);
         String email = getEmail(token);
         String nickname = "temp";
-        User user = userRepository.findByEmail(email, 2);
+        User user = userRepository.findByEmail(email);
         if(user == null) {
             String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             user = User.builder()

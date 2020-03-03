@@ -7,7 +7,7 @@ import java.util.concurrent.Future;
 
 public interface UserRepository {
 
-    User findByEmail(String email, int status);
+    User findByEmail(String email);
 
     int countUser(String email);
 
