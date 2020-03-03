@@ -6,6 +6,7 @@ import com.rest.recruit.dto.ResultResponseWithoutData;
 import com.rest.recruit.dto.SimpleResponse;
 import com.rest.recruit.exception.*;
 import io.jsonwebtoken.ExpiredJwtException;
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -31,6 +32,17 @@ public class ExceptionAdvice {
                 .success("false").build());
     }
 
+    /**
+     *  ClientAbortException - broken pipe
+     *
+     */
+    @ExceptionHandler(ClientAbortException.class)
+    protected ResponseEntity clientAbortException(ClientAbortException e) {
+        return SimpleResponse.ok(ResultResponseWithoutData.builder()
+                .message(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                .status("500")
+                .success("false").build());
+    }
 
     /**
      *  handleException

@@ -13,7 +13,7 @@ constantly==15.1.0
 cryptography==2.8
 daphne==2.4.1
 decorator==4.4.1
-Django==3.0.2
+Django==3.0.3
 django-extensions==2.2.6
 hiredis==1.0.1
 hyperlink==19.0.0
