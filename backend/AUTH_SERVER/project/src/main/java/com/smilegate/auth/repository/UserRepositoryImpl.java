@@ -3,13 +3,10 @@ package com.smilegate.auth.repository;
 import com.smilegate.auth.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Future;
 
 @Slf4j
 @Repository
@@ -75,13 +72,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    @Async
-    public Future<Integer> updateAccessedAt(Integer id, String accessedAt) {
+    public int updateAccessedAt(Integer id, String accessedAt) {
         log.info("=== repo");
         HashMap<String, String> map = new HashMap<>();
         map.put("id", String.valueOf(id));
         map.put("accessedAt", accessedAt);
-        return new AsyncResult<>(session.update("user.updateAccessedAt", map));
+        return session.update("user.updateAccessedAt", map);
     }
 
 }
