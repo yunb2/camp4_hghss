@@ -7,6 +7,7 @@ import com.smilegate.resume.dto.request.ResumeRequestDto;
 import com.smilegate.resume.dto.response.ResumeCountResponseDto;
 import com.smilegate.resume.dto.response.ResumeDetailResponseDto;
 import com.smilegate.resume.service.ResumeService;
+import com.smilegate.resume.service.ResumeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
